@@ -27,8 +27,6 @@ func Cli(taskService *service.TaskService) {
 
 	scanner := bufio.NewScanner(os.Stdin)
 
-	nextID := 0
-
 	for scanner.Scan() {
 		input := scanner.Text()
 
@@ -43,8 +41,8 @@ func Cli(taskService *service.TaskService) {
 
 			title := strings.Join(command[1:], " ")
 			fmt.Println("Добавляем задачу: ", title)
-			nextID++
-			taskService.AddTask(title, nextID)
+
+			taskService.AddTask(title)
 
 		case "list":
 			tasks := taskService.ShowTasks()

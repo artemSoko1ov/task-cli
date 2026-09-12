@@ -3,12 +3,13 @@ package service
 import "task-cli/task"
 
 type TaskService struct {
-	tasks []task.Task
+	tasks  []task.Task
+	nextID int
 }
 
-func (s *TaskService) AddTask(title string, id int) {
+func (s *TaskService) AddTask(title string) {
 	task := task.Task{
-		ID:        id,
+		ID:        s.incrementId(),
 		Title:     title,
 		Completed: false,
 	}
@@ -35,4 +36,9 @@ func (s *TaskService) DeleteTask(id int) {
 
 func (s *TaskService) ShowTasks() []task.Task {
 	return s.tasks
+}
+
+func (s *TaskService) incrementId() int {
+	s.nextID++
+	return s.nextID
 }
