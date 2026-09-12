@@ -1,8 +1,8 @@
 package main
 
 import (
-	"task-cli/service"
 	"task-cli/cli"
+	"task-cli/service"
 )
 
 func main() {

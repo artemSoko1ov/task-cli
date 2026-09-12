@@ -2,23 +2,25 @@ package cli
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
 	"task-cli/service"
+	"task-cli/task"
 )
 
-// func listTasks(tasks []Task) {
-// 	data, err := json.MarshalIndent(tasks, "", "    ")
+func listTasks(tasks []task.Task) {
+	data, err := json.MarshalIndent(tasks, "", "    ")
 
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		return
-// 	}
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-// 	fmt.Println(string(data))
-// }
+	fmt.Println(string(data))
+}
 
 func Cli(taskService *service.TaskService) {
 	fmt.Println("=====|TASK TRACKER|=====")
@@ -45,7 +47,8 @@ func Cli(taskService *service.TaskService) {
 			taskService.AddTask(title, nextID)
 
 		case "list":
-			// listTasks(tasks)
+			tasks := taskService.ShowTasks()
+			listTasks(tasks)
 
 		case "complete":
 			if len(command) < 2 {
@@ -80,6 +83,8 @@ func Cli(taskService *service.TaskService) {
 
 			fmt.Printf("Удаляем %v задачу\n", number)
 			taskService.DeleteTask(number)
+		case "exit":
+			return
 		default:
 			fmt.Println("Неизвестная команда")
 		}
