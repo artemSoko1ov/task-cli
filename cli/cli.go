@@ -62,9 +62,14 @@ func Cli(taskService *service.TaskService) {
 				continue
 			}
 
-			fmt.Printf("Завершаем %v задачу\n", number)
-			taskService.CompleteTask(number)
+			err = taskService.CompleteTask(number)
 
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+
+			fmt.Printf("Завершаем %v задачу\n", number)
 		case "delete":
 			if len(command) < 2 {
 				fmt.Println("Укажите номер задачи")
@@ -79,8 +84,15 @@ func Cli(taskService *service.TaskService) {
 				continue
 			}
 
+			err = taskService.DeleteTask(number)
+
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+
 			fmt.Printf("Удаляем %v задачу\n", number)
-			taskService.DeleteTask(number)
+
 		case "exit":
 			return
 		default:

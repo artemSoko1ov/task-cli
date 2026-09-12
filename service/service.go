@@ -1,6 +1,9 @@
 package service
 
-import "task-cli/task"
+import (
+	"errors"
+	"task-cli/task"
+)
 
 type TaskService struct {
 	tasks  []task.Task
@@ -17,21 +20,27 @@ func (s *TaskService) AddTask(title string) {
 	s.tasks = append(s.tasks, task)
 }
 
-func (s *TaskService) CompleteTask(id int) {
+func (s *TaskService) CompleteTask(id int) error {
 	for i := range s.tasks {
 		if s.tasks[i].ID == id {
 			s.tasks[i].Completed = true
+
+			return nil
 		}
 	}
+
+	return errors.New("Задачи с таким ID не существует")
 }
 
-func (s *TaskService) DeleteTask(id int) {
+func (s *TaskService) DeleteTask(id int) error {
 	for i := range s.tasks {
 		if s.tasks[i].ID == id {
 			s.tasks = append(s.tasks[:i], s.tasks[i+1:]...)
-			break
+			return nil
 		}
 	}
+
+	return errors.New("Задачи с таким ID не существует")
 }
 
 func (s *TaskService) ShowTasks() []task.Task {
