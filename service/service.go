@@ -1,13 +1,19 @@
 package service
 
 import (
-	"errors"
 	"task-cli/task"
+	"task-cli/repository"
 )
 
 type TaskService struct {
-	tasks  []task.Task
+	repo  repository.TaskRepository
 	nextID int
+}
+
+func NewTaskService(repo repository.TaskRepository) *TaskService {
+   return  &TaskService{
+    	repo: repo,
+	}
 }
 
 func (s *TaskService) AddTask(title string) {
@@ -17,34 +23,19 @@ func (s *TaskService) AddTask(title string) {
 		Completed: false,
 	}
 
-	s.tasks = append(s.tasks, task)
+	s.repo.Add(task)
 }
 
 func (s *TaskService) CompleteTask(id int) error {
-	for i := range s.tasks {
-		if s.tasks[i].ID == id {
-			s.tasks[i].Completed = true
-
-			return nil
-		}
-	}
-
-	return errors.New("Задачи с таким ID не существует")
+	return s.repo.Complete(id)
 }
 
 func (s *TaskService) DeleteTask(id int) error {
-	for i := range s.tasks {
-		if s.tasks[i].ID == id {
-			s.tasks = append(s.tasks[:i], s.tasks[i+1:]...)
-			return nil
-		}
-	}
-
-	return errors.New("Задачи с таким ID не существует")
+	return s.repo.Delete(id)
 }
 
 func (s *TaskService) ShowTasks() []task.Task {
-	return s.tasks
+	return s.repo.GetAll()
 }
 
 func (s *TaskService) incrementId() int {
