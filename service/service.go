@@ -1,29 +1,29 @@
 package service
 
 import (
-	"task-cli/task"
 	"task-cli/repository"
+	"task-cli/task"
 )
 
 type TaskService struct {
-	repo  repository.TaskRepository
+	repo   repository.TaskRepository
 	nextID int
 }
 
 func NewTaskService(repo repository.TaskRepository) *TaskService {
-   return  &TaskService{
-    	repo: repo,
+	return &TaskService{
+		repo: repo,
 	}
 }
 
-func (s *TaskService) AddTask(title string) {
-	task := task.Task{
+func (s *TaskService) AddTask(title string) error {
+	t := task.Task{
 		ID:        s.incrementId(),
 		Title:     title,
 		Completed: false,
 	}
 
-	s.repo.Add(task)
+	return s.repo.Add(t)
 }
 
 func (s *TaskService) CompleteTask(id int) error {

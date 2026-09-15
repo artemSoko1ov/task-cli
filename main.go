@@ -1,13 +1,20 @@
 package main
 
 import (
+	"fmt"
 	"task-cli/cli"
+	"task-cli/jsonrepository"
 	"task-cli/service"
-	"task-cli/repository"
 )
 
 func main() {
-	taskRepo := &repository.InMemoryTaskRepository{}
+	taskRepo, err := jsonrepository.NewJSONTaskRepository("tasks.json")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	taskService := service.NewTaskService(taskRepo)
+
 	cli.Cli(taskService)
 }
