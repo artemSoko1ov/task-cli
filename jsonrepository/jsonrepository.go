@@ -26,7 +26,6 @@ func NewJSONTaskRepository(filePath string) (*JSONTaskRepository, error) {
 	return repo, nil
 }
 
-
 func (j *JSONTaskRepository) load() error {
 	_, err := os.Stat(j.filePath)
 

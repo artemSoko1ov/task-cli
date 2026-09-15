@@ -24,6 +24,14 @@ func listTasks(tasks []task.Task) {
 
 func Cli(taskService *service.TaskService) {
 	fmt.Println("=====|TASK TRACKER|=====")
+	fmt.Println(`
+Команды:
+  add <название>       — добавить задачу
+  list                 — показать задачи
+  complete <id>        — завершить задачу
+  delete <id>          — удалить задачу
+  exit                 — выйти
+`)
 
 	scanner := bufio.NewScanner(os.Stdin)
 
